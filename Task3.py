@@ -31,15 +31,13 @@ Print the answer as part of a message:
  <list of codes>
 The list of codes should be print out one per line in lexicographic order with no duplicates.
 """
-# Gets all unique numbers called from Bangalore
+
+
 def get_uniq_called_from_bangalore():
-    # Gets calls made from Bangalore
     from_bangalore = calls.drop(calls[calls.call_inc_num.str[:5] != "(080)"].index)
-    # Gets all unique numbers called from Bangalore
     return from_bangalore.call_ans_num.unique()
 
 
-# Gets all unique area codes and mobile prefixes called from Bangalore
 def get_ordered_prefixes(unique_called):
     unique_codes = []
     for num in unique_called:
@@ -71,3 +69,16 @@ Print the answer as a part of a message::
 to other fixed lines in Bangalore."
 The percentage should have 2 decimal digits
 """
+
+
+def get_percent_from_bangalore_to_bangalore():
+    from_bangalore = calls.drop(calls[calls.call_inc_num.str[:5] != "(080)"].index)
+    from_bangalore_to_bangalore = from_bangalore.drop(
+        from_bangalore[from_bangalore.call_ans_num.str[:5] != "(080)"].index
+    )
+    return round(len(from_bangalore_to_bangalore) / len(from_bangalore) * 100, 2)
+
+
+print(
+    f"{get_percent_from_bangalore_to_bangalore()} percent of calls from fixed lines in Bangalore are calls to other fixed lines in Bangalore."
+)
