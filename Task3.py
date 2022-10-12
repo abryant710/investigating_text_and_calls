@@ -2,21 +2,18 @@
 Read file into texts and calls.
 It's ok if you don't understand how to read files.
 """
-import csv
+import pandas as pd
 
-with open('texts.csv', 'r') as f:
-    reader = csv.reader(f)
-    texts = list(reader)
-
-with open('calls.csv', 'r') as f:
-    reader = csv.reader(f)
-    calls = list(reader)
+text_col_names = ["text_inc_num", "text_ans_num", "text_time"]
+texts = pd.read_csv("texts.csv", names=text_col_names)
+call_col_names = ["call_inc_num", "call_ans_num", "call_time", "call_len_s"]
+calls = pd.read_csv("calls.csv", names=call_col_names)
 
 """
 TASK 3:
 (080) is the area code for fixed line telephones in Bangalore.
 Fixed line numbers include parentheses, so Bangalore numbers
-have the form (080)xxxxxxx.)
+have the form (080)xxxxxxx.
 
 Part A: Find all of the area codes and mobile prefixes called by people
 in Bangalore. In other words, the calls were initiated by "(080)" area code
@@ -33,7 +30,37 @@ Print the answer as part of a message:
 "The numbers called by people in Bangalore have codes:"
  <list of codes>
 The list of codes should be print out one per line in lexicographic order with no duplicates.
+"""
+# Gets all unique numbers called from Bangalore
+def get_uniq_called_from_bangalore():
+    # Gets calls made from Bangalore
+    from_bangalore = calls.drop(calls[calls.call_inc_num.str[:5] != "(080)"].index)
+    # Gets all unique numbers called from Bangalore
+    return from_bangalore.call_ans_num.unique()
 
+
+# Gets all unique area codes and mobile prefixes called from Bangalore
+def get_ordered_prefixes(unique_called):
+    unique_codes = []
+    for num in unique_called:
+        if num[:2] == "140":
+            unique_codes.append(num[:3])
+        elif num[0] == "(":
+            unique_codes.append(num[1 : num.find(")")])
+        elif num[0] in ["7", "8", "9"]:
+            unique_codes.append(num[:4])
+    return sorted(set(unique_codes))
+
+
+def print_prefixes(prefixes):
+    print("The numbers called by people in Bangalore have codes:")
+    for prefix in prefixes:
+        print(prefix)
+
+
+print_prefixes(get_ordered_prefixes(get_uniq_called_from_bangalore()))
+
+"""
 Part B: What percentage of calls from fixed lines in Bangalore are made
 to fixed lines also in Bangalore? In other words, of all the calls made
 from a number starting with "(080)", what percentage of these calls
