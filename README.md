@@ -42,8 +42,8 @@ Complete the five tasks (Task0.py, Task1.py, ...,Task4.py). Do not change the da
 
 In Tasks 3 and 4, you can use in-built methods sorted() or list.sort() for sorting which are the implementation of Timsort and Samplesort, respectively. Both these sorting methods have a worst-case time-complexity of O(n log n). Check the below links to learn more about these methods:
 
-- How to use the above methods - https://docs.python.org/3/howto/sorting.html
-- Complexity analysis of Timsort and Samplesort - http://svn.python.org/projects/python/trunk/Objects/listsort.txt
+- How to use the above methods - <https://docs.python.org/3/howto/sorting.html>
+- Complexity analysis of Timsort and Samplesort - <http://svn.python.org/projects/python/trunk/Objects/listsort.txt>
 
 The solution outputs for each file should be the print statements described in the instructions. Feel free to use other print statements during the development process, but remember to remove them for submission - the submitted files should print only the solution outputs.
 
