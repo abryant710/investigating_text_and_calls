@@ -37,7 +37,7 @@ def get_ordered_prefixes(unique_called):
     for num in unique_called:
         if num[:2] == "140":
             unique_codes.append(num[:3])
-        elif num[0] == "(":
+        elif num[0] == "(0":
             unique_codes.append(num[1 : num.find(")")])
         elif num[0] in ["7", "8", "9"]:
             unique_codes.append(num[:4])

@@ -25,7 +25,7 @@ def get_non_telemarketers():
 def get_possible_telemarketers():
     non_telemarketers = get_non_telemarketers()
     filtered = filter(
-        lambda num: num[0:3] == "140" and num not in non_telemarketers,
+        lambda num: num not in non_telemarketers,
         all_out_call_nums,
     )
     return sorted(list(set(filtered)))
