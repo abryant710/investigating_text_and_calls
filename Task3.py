@@ -1,13 +1,4 @@
-"""
-Read file into texts and calls.
-It's ok if you don't understand how to read files.
-"""
-import pandas as pd
-
-text_col_names = ["text_inc_num", "text_ans_num", "text_time"]
-texts = pd.read_csv("texts.csv", names=text_col_names)
-call_col_names = ["call_inc_num", "call_ans_num", "call_time", "call_len_s"]
-calls = pd.read_csv("calls.csv", names=call_col_names)
+from data_import import calls
 
 """
 TASK 3:
@@ -34,8 +25,11 @@ The list of codes should be print out one per line in lexicographic order with n
 
 
 def get_uniq_called_from_bangalore():
-    from_bangalore = calls.drop(calls[calls.call_inc_num.str[:5] != "(080)"].index)
-    return from_bangalore.call_ans_num.unique()
+    from_bangalore = list(filter(lambda x: x[0][:5] == "(080)", calls))
+    uniq_nums_called = set(
+        [i for list in map(lambda x: x[0:2], from_bangalore) for i in list]
+    )
+    return list(uniq_nums_called)
 
 
 def get_ordered_prefixes(unique_called):
@@ -72,9 +66,9 @@ The percentage should have 2 decimal digits
 
 
 def get_percent_from_bangalore_to_bangalore():
-    from_bangalore = calls.drop(calls[calls.call_inc_num.str[:5] != "(080)"].index)
-    from_bangalore_to_bangalore = from_bangalore.drop(
-        from_bangalore[from_bangalore.call_ans_num.str[:5] != "(080)"].index
+    from_bangalore = list(filter(lambda x: x[0][:5] == "(080)", calls))
+    from_bangalore_to_bangalore = list(
+        filter(lambda x: x[1][:5] == "(080)", from_bangalore)
     )
     return round(len(from_bangalore_to_bangalore) / len(from_bangalore) * 100, 2)
 

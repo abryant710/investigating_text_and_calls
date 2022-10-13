@@ -1,13 +1,4 @@
-"""
-Read file into texts and calls.
-It's ok if you don't understand how to read files.
-"""
-import pandas as pd
-
-text_col_names = ["text_inc_num", "text_ans_num", "text_time"]
-texts = pd.read_csv("texts.csv", names=text_col_names)
-call_col_names = ["call_inc_num", "call_ans_num", "call_time", "call_len_s"]
-calls = pd.read_csv("calls.csv", names=call_col_names)
+from data_import import texts, calls
 
 """
 TASK 4:
@@ -22,18 +13,20 @@ Print a message:
 The list of numbers should be print out one per line in lexicographic order with no duplicates.
 """
 
+all_text_nums = [i for list in map(lambda x: x[:2], texts) for i in list]
+all_in_call_nums = [i for list in map(lambda x: x[1:2], calls) for i in list]
+all_out_call_nums = [i for list in map(lambda x: x[0:1], calls) for i in list]
+
 
 def get_non_telemarketers():
-    all_texts = texts["text_inc_num"].tolist() + texts["text_ans_num"].tolist()
-    all_in_calls = calls["call_ans_num"].tolist()
-    return list(set(all_texts + all_in_calls))
+    return list(set(all_text_nums + all_in_call_nums))
 
 
 def get_possible_telemarketers():
     non_telemarketers = get_non_telemarketers()
-    all_out_calls = calls["call_inc_num"].tolist()
     filtered = filter(
-        lambda num: num[0:3] == "140" and num not in non_telemarketers, all_out_calls
+        lambda num: num[0:3] == "140" and num not in non_telemarketers,
+        all_out_call_nums,
     )
     return sorted(list(set(filtered)))
 
